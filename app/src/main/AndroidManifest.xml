@@ -184,6 +184,14 @@
                 android:value=".ics.ICSClient" />
         </activity>
         <activity
+            android:name="jwtc.android.chess.ai.AiPrefs"
+            android:label="@string/ai_settings_action"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="jwtc.android.chess.ics.CustomCommands"
             android:label="@string/preferences"
             android:exported="true">

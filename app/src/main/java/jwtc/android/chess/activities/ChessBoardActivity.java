@@ -16,6 +16,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.content.Intent;
+import android.preference.PreferenceManager;
+import android.app.AlertDialog;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
@@ -40,6 +45,9 @@ import jwtc.android.chess.constants.PieceSets;
 import jwtc.android.chess.services.GameApi;
 import jwtc.android.chess.services.GameListener;
 import jwtc.chess.JNI;
+import jwtc.chess.PGNEntry;
+import jwtc.android.chess.ai.AiPrefs;
+import jwtc.android.chess.ai.OpenAiExplainer;
 import jwtc.chess.Move;
 import jwtc.android.chess.constants.Piece;
 import jwtc.chess.Pos;
@@ -453,6 +461,67 @@ abstract public class ChessBoardActivity extends BaseActivity implements GameLis
         }
 
         return Math.max(0, dependentView.getHeight());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.ai_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_ask_ai) {
+            askAi();
+            return true;
+        }
+        if (id == R.id.menu_ai_settings) {
+            startActivity(new Intent(this, AiPrefs.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void askAi() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String apiKey = prefs.getString("openai_api_key", "").trim();
+        if (apiKey.isEmpty()) {
+            doToast(getString(R.string.ai_no_key));
+            return;
+        }
+        String model = prefs.getString("openai_model", "gpt-4o-mini").trim();
+
+        StringBuilder moves = new StringBuilder();
+        for (PGNEntry entry : gameApi.getPGNEntries()) {
+            if (entry.sMove != null && !entry.sMove.isEmpty()) {
+                moves.append(entry.sMove).append(' ');
+            }
+        }
+
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.ai_dialog_title)
+                .setMessage(R.string.ai_thinking)
+                .setPositiveButton(R.string.ai_close, null)
+                .show();
+
+        OpenAiExplainer.explain(apiKey, model, gameApi.getFEN(), moves.toString(),
+                new OpenAiExplainer.Callback() {
+                    @Override
+                    public void onResult(String text) {
+                        if (dialog.isShowing()) {
+                            dialog.setMessage(text);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        if (dialog.isShowing()) {
+                            dialog.setTitle(R.string.ai_error_title);
+                            dialog.setMessage(message);
+                        }
+                    }
+                });
     }
 
     @Override

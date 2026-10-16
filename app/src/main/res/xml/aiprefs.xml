@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/ai_prefs_category">
+
+        <EditTextPreference
+            android:key="openai_api_key"
+            android:title="@string/ai_api_key_title"
+            android:summary="@string/ai_api_key_summary"
+            android:inputType="textPassword"
+            android:defaultValue="" />
+
+        <EditTextPreference
+            android:key="openai_model"
+            android:title="@string/ai_model_title"
+            android:summary="@string/ai_model_summary"
+            android:defaultValue="gpt-4o-mini" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

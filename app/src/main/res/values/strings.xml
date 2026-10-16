@@ -536,4 +536,16 @@
     <string name="players_agreed_draw">Draw by agreement</string>
     <string name="white_player_forfeits_on_time">White lost on time</string>
     <string name="white_player_resigned">White resigned</string>
+    <string name="ai_prefs_category">AI explanations</string>
+    <string name="ai_api_key_title">OpenAI API key</string>
+    <string name="ai_api_key_summary">Stored only on this device. Get a key at platform.openai.com</string>
+    <string name="ai_model_title">OpenAI model</string>
+    <string name="ai_model_summary">Model name used for explanations, e.g. gpt-4o-mini</string>
+    <string name="ai_ask_action">Explain position</string>
+    <string name="ai_settings_action">AI settings</string>
+    <string name="ai_no_key">Add your OpenAI API key in AI settings first.</string>
+    <string name="ai_thinking">Asking the AI…</string>
+    <string name="ai_dialog_title">Position explanation</string>
+    <string name="ai_error_title">AI request failed</string>
+    <string name="ai_close">Close</string>
 </resources>

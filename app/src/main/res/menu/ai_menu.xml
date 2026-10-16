@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_ask_ai"
+        android:title="@string/ai_ask_action"
+        android:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_ai_settings"
+        android:title="@string/ai_settings_action"
+        android:showAsAction="never" />
+
+</menu>
